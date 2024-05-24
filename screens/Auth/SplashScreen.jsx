@@ -30,7 +30,7 @@ const SplashScreen = () => {
           } else if (userData.role === 'superadmin') {
             navigation.replace('superAdminStack');
           } else if (userData.role === 'worker') {
-            navigation.replace()
+            navigation.replace('workerStack');
           } else {
             throw new Error('Unknown role');
           }

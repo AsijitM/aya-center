@@ -30,10 +30,20 @@ export default function UpcomingBookings({route}) {
       const todayDate = new Date();
       const todayDateString = todayDate.toISOString().split('T')[0];
       const bookingsCollection = firestore().collection('bookings'); //
-      const querySnapshot = await bookingsCollection
-        .where('date', '>=', todayDateString)
-        .where('customer_id', '==', user.uid)
-        .get(); // Fetch all documents
+
+      let querySnapshot;
+
+      if (userRole == 'customer') {
+        querySnapshot = await bookingsCollection
+          .where('date', '>=', todayDateString)
+          .where('customer_id', '==', user.uid)
+          .get(); // Fetch all documents
+      } else if (userRole == 'worker') {
+        querySnapshot = await bookingsCollection
+          .where('date', '>=', todayDateString)
+          .where('worker_id', '==', user.uid)
+          .get(); // Fetch all documents
+      }
 
       const fetchedBookings = querySnapshot.docs.map(doc => ({
         id: doc.id,
@@ -72,6 +82,8 @@ export default function UpcomingBookings({route}) {
             className={`p-3 border-2 ${
               item.status === 'queue'
                 ? 'border-purple-500'
+                : item.status === 'finished'
+                ? 'border-green-500'
                 : 'border-orange-500'
             } border-l-8 flex-row items-center rounded-lg shadow-md mt-3`}
             onPress={() => handleBookingDetails(item.id)}>
@@ -93,19 +105,27 @@ export default function UpcomingBookings({route}) {
                 className={`font-medium ${
                   item.status === 'queue'
                     ? 'text-purple-500'
+                    : item.status === 'finished'
+                    ? 'text-green-500'
                     : 'text-orange-500'
                 } pb-2`}>
-                {item.status == 'queue' ? 'In Queue' : 'In Progress'}
+                {item.status == 'queue'
+                  ? 'In Queue'
+                  : item.status == 'finished'
+                  ? 'Finished'
+                  : 'In Progress'}
               </Text>
             </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <TouchableOpacity
-        className="absolute bottom-8 right-8 w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center"
-        onPress={handlePress}>
-        <Icons name="calendar" size={30} color="white" />
-      </TouchableOpacity>
+      {userRole == 'customer' && (
+        <TouchableOpacity
+          className="absolute bottom-8 right-8 w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center"
+          onPress={handlePress}>
+          <Icons name="calendar" size={30} color="white" />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

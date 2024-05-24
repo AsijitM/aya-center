@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "105773617326",
+    "project_id": "aya-center",
+    "storage_bucket": "aya-center.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105773617326:android:e326013fe3b53eb4785d3f",
+        "android_client_info": {
+          "package_name": "com.test2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSR_YK1mPfNacKvN63Ipp3U_qceA9S0kE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
